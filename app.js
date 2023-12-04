@@ -1,60 +1,70 @@
 const form = document.querySelector('form');
 const unorderedList = document.querySelector('ul');
 
-const toDOArray = [];
+let toDoList = JSON.parse(localStorage.getItem('toDO'))||[];
 
 const getUniqueId = () => {
   const currentDate = new Date();
   const milliSeconds =
    currentDate.getMilliseconds();
-  id = Math.floor(
+  const id = Math.floor(
     Math.random()
      * 1000
      * milliSeconds);
   return id
 }
 
-function createToDO(id, toDoItem) {
+function createToDo(id, toDoItem) {
   return {
     id:id,
     title:toDoItem
   }
 } 
 
-const storeTodoList = () => {
-  localStorage.setItem(
-    'toDO',
-    JSON.stringify(toDOArray)
-  );
+const storeTodoList = (toDoList) => {
+  try{
+    localStorage.setItem(
+      'toDO',
+      JSON.stringify(toDoList)
+    );
+  } catch(error) {
+    console.error('Failed to store data in the local storage.')
+  }
+
 }
 
 const getInputValue = (event) => {
-  const inputValue = event.target.elements.input.value;
-  return inputValue;
+  return event.target.elements.input.value;
 }
 
-const displayToDoLists = () => {
-  const toDoLists = JSON.parse(localStorage.getItem('toDO'));
+const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
-  toDoLists.forEach(item => {
+  toDoList.forEach(item => {
     const li = document.createElement('li');
     li.innerText = item.title;
     unorderedList.appendChild(li);
   })
 }
+// Display after refreshing the page
+displayToDoLists(toDoList);
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const inputValue = getInputValue(event);
-  const result = createToDO(getUniqueId(), inputValue);
-  // Add new object to the toDO array
-  toDOArray.push(result);
-  // Store data in the localstorage
-  storeTodoList(toDOArray);
-  // Reset input field
-  event.target.elements.input.value = '';
-  // Display the To DO lists
-  displayToDoLists();
+  if(inputValue) {
+    const newToDo = createToDo(getUniqueId(), inputValue);
+    // Add new to do
+    toDoList.push(newToDo);
+    // Store data in the localstorage
+    storeTodoList(toDoList);
+    // Reset input field
+    event.target.elements.input.value = '';
+    // Display the To DO lists
+    displayToDoLists(toDoList);
+  } else {
+    // TO DO: disable button instead aleart is not good for UX
+    alert('Please input things to do first!');
+  }
 })
 
 
