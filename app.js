@@ -1,7 +1,7 @@
 const form = document.querySelector('form');
 const unorderedList = document.querySelector('ul');
 
-let toDoList = JSON.parse(localStorage.getItem('toDO'))||[];
+const toDOArray = [];
 
 const getUniqueId = () => {
   const currentDate = new Date();
@@ -41,8 +41,10 @@ const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
   toDoList.forEach(item => {
     const li = document.createElement('li');
+    li.classList.add('list')
     li.innerText = item.title;
     unorderedList.appendChild(li);
+    addsStrike();
   })
 }
 // Display after refreshing the page
@@ -72,3 +74,164 @@ form.addEventListener('submit', (event) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
+const addsStrike = () => {
+
+document.querySelectorAll('.list').forEach(item => {
+    item.addEventListener('click', function() {
+        item.classList.toggle('strikethrough');
+    });
+});
+
+}
+
+addsStrike();
