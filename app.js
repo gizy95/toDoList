@@ -56,14 +56,14 @@ const displayToDoLists = (toDoList) => {
     const checkBox = document.createElement('input');
     checkBox.setAttribute('type', 'checkbox');
     li.appendChild(checkBox);
-
+    //ADDS CHECKBOX AND TITLE TO LIST
     const text = document.createElement('span');
     text.innerText = item.title;
     li.appendChild(text);
 
     unorderedList.appendChild(li);
     
-
+    //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
     checkBox.addEventListener('change', function() {
       if(this.checked) {
         li.classList.add('strikethrough');
