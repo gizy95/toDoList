@@ -2,6 +2,7 @@ const form = document.querySelector('form');
 const unorderedList = document.querySelector('ul');
 const submitBtn = document.querySelector('#add');
 const inputField = document.querySelector('input');
+const cancelBtn = document.querySelector('#cancel');
 let itemToBeUpdated;
 
 // Get stored data if it exist otherwise set it as an empty array
@@ -40,6 +41,15 @@ const storeTodoList = (toDoList) => {
 const getInputValue = (event) => {
   return event.target.elements.input.value;
 }
+
+const cancelEdit = () => {
+  cancelBtn.style.display = 'inline-block';
+  cancelBtn.addEventListener('click', (event) => {
+    cancelBtn.style.display = 'none';
+    event.target.elements.input.value = '';
+  })
+}
+
 const addEventListenerToEachItem = () => {
   // This function adds eventLister to each 
   // Since there are multiple items loop through each
@@ -53,6 +63,9 @@ const addEventListenerToEachItem = () => {
       // Change Add button to Edit button
       submitBtn.textContent = 'Edit';
       inputField.value = itemToBeUpdated.title;
+
+      cancelEdit();
+
       });
     });
 };
@@ -119,6 +132,7 @@ form.addEventListener('submit', (event) => {
     itemToBeUpdated = '';
     // Reset input field
     event.target.elements.input.value = '';
+    cancelBtn.style.display = 'none';
     storeTodoList(toDoList);
     // Display the To DO lists      
     displayToDoLists(toDoList);
