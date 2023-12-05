@@ -1,7 +1,7 @@
 const form = document.querySelector('form');
 const unorderedList = document.querySelector('ul');
 
-const toDOArray = [];
+let toDoList = JSON.parse(localStorage.getItem('toDO'))||[];
 
 const getUniqueId = () => {
   const currentDate = new Date();
@@ -36,19 +36,47 @@ const storeTodoList = (toDoList) => {
 const getInputValue = (event) => {
   return event.target.elements.input.value;
 }
+//ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
+const addsStrike = () => {
+
+document.querySelectorAll('.list').forEach(item => {
+    item.addEventListener('click', function() {
+        item.classList.toggle('strikethrough');
+    });
+});
+
+}
 
 const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
   toDoList.forEach(item => {
-    const li = document.createElement('li');
-    li.classList.add('list')
-    li.innerText = item.title;
+     
+     const li = document.createElement('li');
+    
+    const checkBox = document.createElement('input');
+    checkBox.setAttribute('type', 'checkbox');
+    li.appendChild(checkBox);
+
+    const text = document.createElement('span');
+    text.innerText = item.title;
+    li.appendChild(text);
+
     unorderedList.appendChild(li);
-    addsStrike();
+    
+
+    checkBox.addEventListener('change', function() {
+      if(this.checked) {
+        li.classList.add('strikethrough');
+      } else {
+        li.classList.remove('strikethrough');
+      }
+    });
+    
   })
 }
 // Display after refreshing the page
 displayToDoLists(toDoList);
+
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -67,6 +95,7 @@ form.addEventListener('submit', (event) => {
     // TO DO: disable button instead aleart is not good for UX
     alert('Please input things to do first!');
   }
+
 })
 
 
@@ -193,45 +222,3 @@ form.addEventListener('submit', (event) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
-const addsStrike = () => {
-
-document.querySelectorAll('.list').forEach(item => {
-    item.addEventListener('click', function() {
-        item.classList.toggle('strikethrough');
-    });
-});
-
-}
-
-addsStrike();
