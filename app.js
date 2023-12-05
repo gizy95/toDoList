@@ -41,33 +41,6 @@ const getInputValue = (event) => {
   return event.target.elements.input.value;
 }
 //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
-const addsStrike = () => {
-
-  document.querySelectorAll('.list').forEach(item => {
-    item.addEventListener('click', function () {
-      item.classList.toggle('strikethrough');
-    });
-  });
-
-}
-
-const addEventListenerToEachItem = () => {
-  // This function adds eventLister to each 
-  // Since there are multiple items loop through each
-  const listItems = document.querySelectorAll('li span');
-  listItems.forEach((item) => {
-    item.addEventListener('click', (event) => {
-      const toDoId = Number(event.target.id);
-      // Assign item t be updated to a global variable
-      // So that we can update it in another function
-      itemToBeUpdated = toDoList.find(item => item.id === toDoId);
-      // Change Add button to Edit button
-      submitBtn.textContent = 'Edit';
-      inputField.value = itemToBeUpdated.title;
-      });
-    });
-};
-
 const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
   toDoList.forEach(item => {
@@ -84,6 +57,12 @@ const displayToDoLists = (toDoList) => {
     text.setAttribute('id', item.id);
     li.appendChild(text);
 
+    //ADDS DELETE BUTTON TO LIST
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'X';
+    deleteButton.classList.add('delete-button');
+    li.appendChild(deleteButton);
+
     unorderedList.appendChild(li);
 
     //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
@@ -94,6 +73,17 @@ const displayToDoLists = (toDoList) => {
         li.classList.remove('strikethrough');
       }
     });
+
+    deleteButton.addEventListener('click', function() {
+      if (window.confirm("Are you sure you want to delete this item?")) {
+      li.remove();
+      const index = toDoList.findIndex(todo => todo.id === item.id);
+      toDoList.splice(index, 1);
+      storeTodoList(toDoList);
+      displayToDoLists(toDoList);  
+      }
+    });
+    
   })
   // Everytime the list has been updated add eventListner
   addEventListenerToEachItem();
