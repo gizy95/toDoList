@@ -36,17 +36,47 @@ const storeTodoList = (toDoList) => {
 const getInputValue = (event) => {
   return event.target.elements.input.value;
 }
+//ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
+const addsStrike = () => {
+
+document.querySelectorAll('.list').forEach(item => {
+    item.addEventListener('click', function() {
+        item.classList.toggle('strikethrough');
+    });
+});
+
+}
 
 const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
   toDoList.forEach(item => {
-    const li = document.createElement('li');
-    li.innerText = item.title;
+     
+     const li = document.createElement('li');
+    
+    const checkBox = document.createElement('input');
+    checkBox.setAttribute('type', 'checkbox');
+    li.appendChild(checkBox);
+    //ADDS CHECKBOX AND TITLE TO LIST
+    const text = document.createElement('span');
+    text.innerText = item.title;
+    li.appendChild(text);
+
     unorderedList.appendChild(li);
+    
+    //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
+    checkBox.addEventListener('change', function() {
+      if(this.checked) {
+        li.classList.add('strikethrough');
+      } else {
+        li.classList.remove('strikethrough');
+      }
+    });
+    
   })
 }
 // Display after refreshing the page
 displayToDoLists(toDoList);
+
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -65,7 +95,127 @@ form.addEventListener('submit', (event) => {
     // TO DO: disable button instead aleart is not good for UX
     alert('Please input things to do first!');
   }
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
