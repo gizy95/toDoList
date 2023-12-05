@@ -1,33 +1,37 @@
 const form = document.querySelector('form');
 const unorderedList = document.querySelector('ul');
+const submitBtn = document.querySelector('#add');
+const inputField = document.querySelector('input');
+let itemToBeUpdated;
 
-let toDoList = JSON.parse(localStorage.getItem('toDO'))||[];
+// Get stored data if it exist otherwise set it as an empty array
+let toDoList = JSON.parse(localStorage.getItem('toDo')) || [];
 
 const getUniqueId = () => {
   const currentDate = new Date();
   const milliSeconds =
-   currentDate.getMilliseconds();
+    currentDate.getMilliseconds();
   const id = Math.floor(
     Math.random()
-     * 1000
-     * milliSeconds);
+    * 1000
+    * milliSeconds);
   return id
 }
 
 function createToDo(id, toDoItem) {
   return {
-    id:id,
-    title:toDoItem
+    id: id,
+    title: toDoItem
   }
-} 
+}
 
 const storeTodoList = (toDoList) => {
-  try{
+  try {
     localStorage.setItem(
-      'toDO',
+      'toDo',
       JSON.stringify(toDoList)
     );
-  } catch(error) {
+  } catch (error) {
     console.error('Failed to store data in the local storage.')
   }
 
@@ -39,40 +43,60 @@ const getInputValue = (event) => {
 //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
 const addsStrike = () => {
 
-document.querySelectorAll('.list').forEach(item => {
-    item.addEventListener('click', function() {
-        item.classList.toggle('strikethrough');
+  document.querySelectorAll('.list').forEach(item => {
+    item.addEventListener('click', function () {
+      item.classList.toggle('strikethrough');
     });
-});
+  });
 
 }
+
+const addEventListenerToEachItem = () => {
+  // This function adds eventLister to each 
+  // Since there are multiple items loop through each
+  const listItems = document.querySelectorAll('li span');
+  listItems.forEach((item) => {
+    item.addEventListener('click', (event) => {
+      const toDoId = Number(event.target.id);
+      // Assign item t be updated to a global variable
+      // So that we can update it in another function
+      itemToBeUpdated = toDoList.find(item => item.id === toDoId);
+      // Change Add button to Edit button
+      submitBtn.textContent = 'Edit';
+      inputField.value = itemToBeUpdated.title;
+      });
+    });
+};
 
 const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
   toDoList.forEach(item => {
-     
-     const li = document.createElement('li');
-    
+
+    const li = document.createElement('li');
+
     const checkBox = document.createElement('input');
     checkBox.setAttribute('type', 'checkbox');
     li.appendChild(checkBox);
     //ADDS CHECKBOX AND TITLE TO LIST
     const text = document.createElement('span');
     text.innerText = item.title;
+    // Add id for updating lists
+    text.setAttribute('id', item.id);
     li.appendChild(text);
 
     unorderedList.appendChild(li);
-    
+
     //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
-    checkBox.addEventListener('change', function() {
-      if(this.checked) {
+    checkBox.addEventListener('change', function () {
+      if (this.checked) {
         li.classList.add('strikethrough');
       } else {
         li.classList.remove('strikethrough');
       }
     });
-    
   })
+  // Everytime the list has been updated add eventListner
+  addEventListenerToEachItem();
 }
 // Display after refreshing the page
 displayToDoLists(toDoList);
@@ -80,22 +104,33 @@ displayToDoLists(toDoList);
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const inputValue = getInputValue(event);
-  if(inputValue) {
-    const newToDo = createToDo(getUniqueId(), inputValue);
-    // Add new to do
-    toDoList.push(newToDo);
-    // Store data in the localstorage
-    storeTodoList(toDoList);
+  // If update mode is active
+  if(itemToBeUpdated) {
+    itemToBeUpdated.title = inputField.value;
+    submitBtn.textContent = 'Add';
+    itemToBeUpdated = '';
     // Reset input field
     event.target.elements.input.value = '';
-    // Display the To DO lists
+    storeTodoList(toDoList);
+    // Display the To DO lists      
     displayToDoLists(toDoList);
   } else {
-    // TO DO: disable button instead aleart is not good for UX
-    alert('Please input things to do first!');
+      const inputValue = getInputValue(event);
+      if (inputValue) {
+        const newToDo = createToDo(getUniqueId(), inputValue);
+        // Add new to do
+        toDoList.push(newToDo);
+        // Store data in the localstorage
+        storeTodoList(toDoList);
+        // Reset input field
+        event.target.elements.input.value = '';
+        // Display the To DO lists
+        displayToDoLists(toDoList);
+      } else {
+        // TO DO: disable button instead aleart is not good for UX
+        alert('Please input things to do first!');
+      }
   }
-
 })
 
 
