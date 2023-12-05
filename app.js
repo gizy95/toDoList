@@ -40,6 +40,23 @@ const storeTodoList = (toDoList) => {
 const getInputValue = (event) => {
   return event.target.elements.input.value;
 }
+const addEventListenerToEachItem = () => {
+  // This function adds eventLister to each 
+  // Since there are multiple items loop through each
+  const listItems = document.querySelectorAll('li span');
+  listItems.forEach((item) => {
+    item.addEventListener('click', (event) => {
+      const toDoId = Number(event.target.id);
+      // Assign item t be updated to a global variable
+      // So that we can update it in another function
+      itemToBeUpdated = toDoList.find(item => item.id === toDoId);
+      // Change Add button to Edit button
+      submitBtn.textContent = 'Edit';
+      inputField.value = itemToBeUpdated.title;
+      });
+    });
+};
+
 //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
 const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
@@ -80,13 +97,14 @@ const displayToDoLists = (toDoList) => {
       const index = toDoList.findIndex(todo => todo.id === item.id);
       toDoList.splice(index, 1);
       storeTodoList(toDoList);
-      displayToDoLists(toDoList);  
+      displayToDoLists(toDoList); 
+     
       }
     });
     
   })
-  // Everytime the list has been updated add eventListner
-  addEventListenerToEachItem();
+   // Everytime the list has been updated add eventListner 
+      addEventListenerToEachItem();
 }
 // Display after refreshing the page
 displayToDoLists(toDoList);
