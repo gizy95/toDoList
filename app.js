@@ -54,6 +54,7 @@ const displayToDoLists = (toDoList) => {
     //ADDS DELETE BUTTON TO LIST
     const deleteButton = document.createElement('button');
     deleteButton.innerText = 'X';
+    deleteButton.classList.add('delete-button');
     li.appendChild(deleteButton);
 
     unorderedList.appendChild(li);
@@ -68,11 +69,13 @@ const displayToDoLists = (toDoList) => {
     });
 
     deleteButton.addEventListener('click', function() {
+      if (window.confirm("Are you sure you want to delete this item?")) {
       li.remove();
       const index = toDoList.findIndex(todo => todo.id === item.id);
       toDoList.splice(index, 1);
       storeTodoList(toDoList);
       displayToDoLists(toDoList);  
+      }
     });
     
   })
