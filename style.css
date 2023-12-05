@@ -8,3 +8,14 @@
     text-decoration: line-through;
     
 }
+
+
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 5px;
+}
