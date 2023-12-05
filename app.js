@@ -36,16 +36,6 @@ const storeTodoList = (toDoList) => {
 const getInputValue = (event) => {
   return event.target.elements.input.value;
 }
-//ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
-const addsStrike = () => {
-
-document.querySelectorAll('.list').forEach(item => {
-    item.addEventListener('click', function() {
-        item.classList.toggle('strikethrough');
-    });
-});
-
-}
 
 const displayToDoLists = (toDoList) => {
   unorderedList.innerHTML = '';
@@ -61,6 +51,11 @@ const displayToDoLists = (toDoList) => {
     text.innerText = item.title;
     li.appendChild(text);
 
+    //ADDS DELETE BUTTON TO LIST
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'X';
+    li.appendChild(deleteButton);
+
     unorderedList.appendChild(li);
     
     //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
@@ -70,6 +65,14 @@ const displayToDoLists = (toDoList) => {
       } else {
         li.classList.remove('strikethrough');
       }
+    });
+
+    deleteButton.addEventListener('click', function() {
+      li.remove();
+      const index = toDoList.findIndex(todo => todo.id === item.id);
+      toDoList.splice(index, 1);
+      storeTodoList(toDoList);
+      displayToDoLists(toDoList);  
     });
     
   })
