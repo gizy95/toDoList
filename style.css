@@ -4,12 +4,17 @@
     box-sizing: border-box;
 }
 
-.strikethrough {
+span.strikethrough {
     text-decoration: line-through;
     
 }
 
-
+ul li {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+}
 
 .delete-button {
     background-color: red;
