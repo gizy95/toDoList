@@ -55,7 +55,7 @@ const addEventListenerToEachItem = () => {
   // Since there are multiple items loop through each
   const listItems = document.querySelectorAll('li span span');
   listItems.forEach((item) => {
-    item.addEventListener('click', (event) => {
+    item.addEventListener('dblclick', (event) => {
       const toDoId = Number(event.target.id);
       // Assign item t be updated to a global variable
       // So that we can update it in another function
