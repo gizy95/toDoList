@@ -22,7 +22,8 @@ const getUniqueId = () => {
 function createToDo(id, toDoItem) {
   return {
     id: id,
-    title: toDoItem
+    title: toDoItem,
+    checked: false
   }
 }
 
@@ -103,11 +104,20 @@ const displayToDoLists = (toDoList) => {
     //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
     checkBox.addEventListener('change', function () {
       if (this.checked) {
+        item.checked = true;
         text.classList.add('strikethrough');
       } else {
+        item.checked = false;
         text.classList.remove('strikethrough');
       }
+      storeTodoList(toDoList);
+       
     });
+
+    if (item.checked) {
+      text.classList.add('strikethrough');
+      checkBox.checked = true;
+    }
 
     deleteButton.addEventListener('click', function() {
       if (window.confirm("Are you sure you want to delete this item?")) {
