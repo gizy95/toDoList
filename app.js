@@ -53,7 +53,7 @@ const cancelEdit = () => {
 const addEventListenerToEachItem = () => {
   // This function adds eventLister to each 
   // Since there are multiple items loop through each
-  const listItems = document.querySelectorAll('li span');
+  const listItems = document.querySelectorAll('li span span');
   listItems.forEach((item) => {
     item.addEventListener('click', (event) => {
       const toDoId = Number(event.target.id);
@@ -85,7 +85,12 @@ const displayToDoLists = (toDoList) => {
     text.innerText = item.title;
     // Add id for updating lists
     text.setAttribute('id', item.id);
-    li.appendChild(text);
+    
+    const span = document.createElement('span');
+    span.appendChild(checkBox);
+    span.appendChild(text);
+
+    li.appendChild(span);
 
     //ADDS DELETE BUTTON TO LIST
     const deleteButton = document.createElement('button');
@@ -98,9 +103,9 @@ const displayToDoLists = (toDoList) => {
     //ADDS STRIKE THROUGH TO ITEMS ON LIST BASED ON CLASS NAME
     checkBox.addEventListener('change', function () {
       if (this.checked) {
-        li.classList.add('strikethrough');
+        text.classList.add('strikethrough');
       } else {
-        li.classList.remove('strikethrough');
+        text.classList.remove('strikethrough');
       }
     });
 
