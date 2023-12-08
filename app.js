@@ -43,11 +43,13 @@ const getInputValue = (event) => {
   return event.target.elements.input.value;
 }
 
-const cancelEdit = () => {
+const cancelEdit = (originalTitle) => {
   cancelBtn.style.display = 'inline-block';
-  cancelBtn.addEventListener('click', (event) => {
+  cancelBtn.addEventListener('click', () => {
     cancelBtn.style.display = 'none';
-    event.target.elements.input.value = '';
+    submitBtn.textContent = 'Add'; 
+    // Reset the input field value to the original title
+    inputField.value = originalTitle; 
   })
 }
 
@@ -61,11 +63,13 @@ const addEventListenerToEachItem = () => {
       // Assign item t be updated to a global variable
       // So that we can update it in another function
       itemToBeUpdated = toDoList.find(item => item.id === toDoId);
+      // Save the original title name
+      const originalTitle = itemToBeUpdated.title;
       // Change Add button to Edit button
       submitBtn.textContent = 'Edit';
       inputField.value = itemToBeUpdated.title;
 
-      cancelEdit();
+      cancelEdit(originalTitle);
 
       });
     });
